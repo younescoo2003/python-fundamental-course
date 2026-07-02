@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پلن کلی دوره پایتون</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: #070b12;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 25px;
+            background-image: radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.03) 0%, transparent 50%);
+        }
+
+        /* کانتینر اصلی با حس شیشه‌ای (Glassmorphism) تیره */
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 36px;
+            padding: 30px 35px 25px;
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(6, 182, 212, 0.1) inset;
+            transition: all 0.3s ease;
+        }
+
+        /* ---------- هدر و نوار VS Code ---------- */
+        .vscode-bar {
+            background: #0f172a;
+            padding: 8px 18px;
+            border-radius: 14px 14px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 2px solid #06b6d4;
+            margin: -30px -35px 25px -35px;
+            padding: 12px 35px;
+            flex-wrap: wrap;
+        }
+
+        .vscode-dots {
+            display: flex;
+            gap: 8px;
+        }
+        .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+
+        .vscode-path {
+            color: #7b8ba3;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            margin-right: 10px;
+        }
+        .vscode-path i {
+            color: #06b6d4;
+            font-style: normal;
+        }
+        .vscode-path .branch {
+            background: #1e293b;
+            padding: 0 12px;
+            border-radius: 30px;
+            color: #38bdf8;
+            margin-right: 8px;
+        }
+
+        /* هدر اصلی */
+        .main-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed rgba(56, 189, 248, 0.2);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .python-badge {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            padding: 10px 22px;
+            border-radius: 60px;
+            border: 1px solid #06b6d4;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+        }
+        .python-badge span {
+            font-size: 28px;
+            font-weight: 900;
+            color: #facc15;
+        }
+        .python-badge small {
+            color: #38bdf8;
+            font-size: 22px;
+            font-weight: 700;
+            margin-right: 6px;
+        }
+
+        .title-group h1 {
+            font-size: 26px;
+            font-weight: 900;
+            color: #f1f5f9;
+            letter-spacing: -0.5px;
+        }
+        .title-group h1 .highlight {
+            color: #06b6d4;
+            border-bottom: 3px solid #06b6d4;
+        }
+        .title-group p {
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        .status-badge {
+            background: #06b6d4;
+            color: #0f172a;
+            padding: 6px 18px;
+            border-radius: 60px;
+            font-weight: 900;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            border: 1px solid #22d3ee;
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.3);
+        }
+
+        /* ---------- گرید کارت‌های جلسات ---------- */
+        .sessions-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 10px;
+        }
+
+        .session-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
+            padding: 18px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            border-right: 6px solid #06b6d4;
+            border-left: 1px solid rgba(56, 189, 248, 0.08);
+            border-top: 1px solid rgba(56, 189, 248, 0.08);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.08);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+        .session-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.02), transparent);
+            pointer-events: none;
+        }
+        .session-card:hover {
+            transform: translateX(-6px) scale(1.01);
+            border-right-width: 10px;
+            border-color: #22d3ee;
+            background: rgba(30, 41, 59, 0.8);
+            box-shadow: 0 15px 35px -12px rgba(6, 182, 212, 0.25);
+        }
+
+        /* کارت مخصوص آزمون */
+        .session-card.exam {
+            border-right-color: #facc15;
+            background: rgba(250, 204, 21, 0.05);
+        }
+        .session-card.exam:hover {
+            border-right-color: #fbbf24;
+            box-shadow: 0 15px 35px -12px rgba(250, 204, 21, 0.2);
+        }
+
+        .session-info {
+            flex: 2;
+            min-width: 200px;
+        }
+        .session-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .session-title .session-num {
+            background: #1e293b;
+            color: #06b6d4;
+            font-size: 13px;
+            padding: 0 12px;
+            border-radius: 30px;
+            font-weight: 900;
+            border: 1px solid #06b6d4;
+        }
+        .session-title .date-badge {
+            background: #0f172a;
+            color: #e2e8f0;
+            font-size: 14px;
+            padding: 2px 16px;
+            border-radius: 30px;
+            font-weight: 700;
+            border: 1px solid #334155;
+        }
+
+        .session-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 16px;
+            margin-top: 6px;
+        }
+        .time-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(15, 23, 42, 0.7);
+            padding: 2px 14px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #cbd5e1;
+            border: 1px solid #2d3a4f;
+        }
+        .time-chip.morning {
+            border-color: #f59e0b;
+            color: #fcd34d;
+        }
+        .time-chip.evening {
+            border-color: #06b6d4;
+            color: #67e8f9;
+        }
+        .time-chip i {
+            font-style: normal;
+        }
+
+        .session-desc {
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 300;
+            margin-top: 4px;
+            padding-right: 4px;
+            border-right: 2px solid transparent;
+        }
+
+        .session-icon-big {
+            font-size: 32px;
+            opacity: 0.6;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+        .session-card:hover .session-icon-big {
+            opacity: 1;
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        /* ---------- فوتر حرفه‌ای ---------- */
+        .footer-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(56, 189, 248, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .terminal-footer {
+            font-family: 'Courier New', monospace;
+            background: #0f172a;
+            padding: 6px 22px;
+            border-radius: 60px;
+            border: 1px solid #1e293b;
+            color: #38bdf8;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+        .terminal-footer span {
+            color: #facc15;
+        }
+
+        .motivation-text {
+            color: #94a3b8;
+            font-weight: 300;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .motivation-text strong {
+            color: #e2e8f0;
+            font-weight: 700;
+        }
+        .motivation-text .teal {
+            color: #06b6d4;
+            font-weight: 700;
+        }
+
+        /* ریسپانسیو */
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px 15px;
+            }
+            .vscode-bar {
+                margin: -20px -15px 20px -15px;
+                padding: 10px 20px;
+                flex-wrap: wrap;
+            }
+            .main-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .title-group h1 {
+                font-size: 20px;
+            }
+            .session-card {
+                padding: 16px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .session-icon-big {
+                display: none;
+            }
+            .footer-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- نوار شبیه‌سازی VS Code -->
+        <div class="vscode-bar">
+            <div class="vscode-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+            </div>
+            <div class="vscode-path">
+                <i>~/python-bootcamp</i> <span class="branch">📂 main</span>
+            </div>
+            <div style="flex:1; text-align: left; color: #475569; font-size: 13px; font-family: monospace;">
+                ⚡ Python 3.8+
+            </div>
+        </div>
+
+        <!-- هدر اصلی -->
+        <div class="main-header">
+            <div class="logo-area">
+                <div class="python-badge">
+                    <span>🐍</span> <small>Python Fundamental</small>
+                </div>
+                <div class="title-group">
+                    <h1>دوره مقدماتی <span class="highlight">پایتون</span></h1>
+                    <p>📌 مسیر یادگیری از پایه تا پروژه‌های واقعی</p>
+                </div>
+            </div>
+            <div class="status-badge">
+                🚀 شروع از ۱۵ تیر
+            </div>
+        </div>
+
+        <!-- لیست جلسات -->
+        <div class="sessions-grid">
+
+            <!-- 1. معارفه -->
+            <div class="session-card">
+                <div class="session-info">
+                    <div class="session-title">
+                        <span class="session-num">#Intro</span>
+                        جلسه معارفه و آشنایی
+                        <span class="date-badge">۱۵ تیر</span>
+                    </div>
+                    <div class="session-meta">
+                        <span class="time-chip evening"><i>🌙</i> ساعت ۱۶:۰۰ (۴ عصر)</span>
+                        <span class="time-chip"><i>⏱</i> مدت: ۱ ساعت</span>
+                    </div>
+                    <div class="session-desc">
+                        🎯 هدف: آشنایی با روند دوره، ارزیابی تیم و معرفی مسیر حرفه‌ای
+                    </div>
+                </div>
+                <div class="session-icon-big">👋</div>
+            </div>
+
+            <!-- 2. جلسه اول -->
+            <div class="session-card">
+                <div class="session-info">
+                    <div class="session-title">
+                        <span class="session-num">#1</span>
+                        مبانی اولیه ساختار داده ها و عملگر ها لیست ها
+                        <span class="date-badge">۲۵ تیر</span>
+                    </div>
+                    <div class="session-meta">
+                        <span class="time-chip morning"><i>☀️</i> ساعت ۱۰:۰۰ - ۱۱:۳۰</span>
+                        <span class="time-chip evening"><i>🌙</i> ساعت ۱۷:۰۰ - ۱۸:۳۰</span>
+                        <span class="time-chip"><i>⚡</i> ۲ بخش ۱.۵ ساعته</span>
+                    </div>
+                    <div class="session-desc">
+                        📖 آشنایی با متغیرها، انواع داده،  print() و گرفتن ورودی از کاربر
+                    </div>
+                </div>
+                <div class="session-icon-big">💻</div>
+            </div>
+
+            <!-- 3. جلسه دوم -->
+            <div class="session-card">
+                <div class="session-info">
+                    <div class="session-title">
+                        <span class="session-num">#2</span>
+                        کار با لیست ها دیکشنری ها و کمی حرفه ای تر 
+                        <span class="date-badge">۱ مرداد</span>
+                    </div>
+                    <div class="session-meta">
+                        <span class="time-chip morning"><i>☀️</i> ساعت ۱۰:۰۰ - ۱۱:۳۰</span>
+                        <span class="time-chip evening"><i>🌙</i> ساعت ۱۷:۰۰ - ۱۸:۳۰</span>
+                        <span class="time-chip"><i>⚡</i> ۲ بخش ۱.۵ ساعته</span>
+                    </div>
+                    <div class="session-desc">
+                        📖 کار با لیست ها و دیکشنری ها و کار روی اونها با چنتا دستوری باحال
+                    </div>
+                </div>
+                <div class="session-icon-big">🔄</div>
+            </div>
+
+            <!-- 4. جلسه سوم -->
+            <div class="session-card">
+                <div class="session-info">
+                    <div class="session-title">
+                        <span class="session-num">#3</span>
+                        شرط های و حلقه ها و تکرار
+                        <span class="date-badge">۸ مرداد</span>
+                    </div>
+                    <div class="session-meta">
+                        <span class="time-chip morning"><i>☀️</i> ساعت ۱۰:۰۰ - ۱۱:۳۰</span>
+                        <span class="time-chip evening"><i>🌙</i> ساعت ۱۷:۰۰ - ۱۸:۳۰</span>
+                        <span class="time-chip"><i>⚡</i> ۲ بخش ۱.۵ ساعته</span>
+                    </div>
+                    <div class="session-desc">
+                        📖 for , while , if ...
+                    </div>
+                </div>
+                <div class="session-icon-big">⚙️</div>
+            </div>
+
+            <!-- 5. جلسه چهارم -->
+            <div class="session-card">
+                <div class="session-info">
+                    <div class="session-title">
+                        <span class="session-num">#4</span>
+                        توابع و لامبدا 
+                        <span class="date-badge">۱۵ مرداد</span>
+                    </div>
+                    <div class="session-meta">
+                        <span class="time-chip morning"><i>☀️</i> ساعت ۱۰:۰۰ - ۱۱:۳۰</span>
+                        <span class="time-chip evening"><i>🌙</i> ساعت ۱۷:۰۰ - ۱۸:۳۰</span>
+                        <span class="time-chip"><i>⚡</i> ۲ بخش ۱.۵ ساعته</span>
+                    </div>
+                    <div class="session-desc">
+                        📖 توابع و لامبا و ذخیره دیتا هامون توی فایل ... این جلسه قراره بازی بنویسیم 
+                    </div>
+                </div>
+                <div class="session-icon-big">📁</div>
+            </div>
+
+            <!-- 6. آزمون عملی (بدون ساعت) -->
+            <div class="session-card exam">
+                <div class="session-info">
+                    <div class="session-title">
+                        <span class="session-num" style="border-color:#facc15; color:#facc15;">#Final</span>
+                        آزمون عملی کدنویسی - تعیین سطح
+                        <span class="date-badge" style="border-color:#facc15; color:#facc15;">۲۰ مرداد</span>
+                    </div>
+                    <div class="session-meta">
+                        <span class="time-chip" style="border-color:#facc15; color:#fcd34d;"><i>🎯</i> ساع آزمون برای هر نفر مجزا است </span>
+                        <span class="time-chip"><i>✅</i> شرط قبولی گرفتن نمره بالای 70 و ورود به دوره پیشرفته</span>
+                    </div>
+                    <div class="session-desc" style="color: #fde68a;">
+                        🧠 سنجش عملی تمام مباحث در قالب چالش‌های کدنویسی واقعی
+                    </div>
+                </div>
+                <div class="session-icon-big">🏆</div>
+            </div>
+
+        </div>
+
+        <!-- فوتر حرفه‌ای -->
+        <div class="footer-section">
+            <div class="terminal-footer">
+                <span>$</span> python3 manage.py <span style="color:#22d3ee;">--schedule</span>
+            </div>
+            <div class="motivation-text">
+                <span>✨</span> <strong>مسیر کدنویسی</strong> خود را با <span class="teal">انرژی</span> و <span class="teal">تعهد</span> طی کن
+            </div>
+            <div style="font-family: monospace; color: #06b6d4; font-size: 14px; direction: ltr;">
+                >>> print("Hello, Python World!")
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
